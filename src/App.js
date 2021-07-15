@@ -1,12 +1,13 @@
 import './App.css';
 import Post from "./pages/Post";
-import ImageUpload from './pages/ImageUpload';
+import Imageupload from './pages/ImageUpload';
 import logo from "./images/Logo.svg";
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import React, {useState, useEffect} from "react";
 import { db, auth } from './utils/firebase';
 import { Button, Input } from '@material-ui/core';
+
 
 
 
@@ -47,7 +48,7 @@ function App() {
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
     const [posts, setPosts] = useState ([]); 
-    const [Open, setOpen] = useState ([false]);
+    const [Open, setOpen] = useState (false);
     const [openSignIn, setOpenSignIn] = useState(false);
     const [username, setUsername] = useState ('');
     const [user, setUser] = useState (null);
@@ -128,9 +129,14 @@ function App() {
       else{
       auth.createUserWithEmailAndPassword(payload.email, payload.password)
       .then((authUser) => {
+        alert("Registered and signed in");
+       window.location.reload(true);
+
         return authUser.user.updateProfile({
           displayName: username
+          
         })
+        
       })
       .catch((error) => alert(error.message));
       setOpen(false);
@@ -141,7 +147,8 @@ function App() {
   return (
     <div className="app">
       
-      
+   
+     
          <Modal
            open={openSignIn}
            onClose={() => setOpenSignIn(false)}
@@ -246,7 +253,7 @@ function App() {
       )}
       </div>
       {user?.displayName ? (
-          <ImageUpload username={user.displayName}/>
+          <Imageupload username={user.displayName}/>
         ):( 
           <h3>Sorry you need to Login first to upload</h3>
         )}
